@@ -17,6 +17,15 @@ export class PlayersService {
     this.Create({ name, email, phoneNumber });
   }
 
+  async GetPlayerByEmail(email: string): Promise<Player> {
+    const currentPlayer = this.players.find((player) => player.email === email);
+    return currentPlayer;
+  }
+
+  async GetPlayers(): Promise<Player[]> {
+    return this.players;
+  }
+
   Create({ name, email, phoneNumber }: CreatePlayerDto): void {
     this.players.push({
       name,
