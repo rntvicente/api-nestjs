@@ -13,7 +13,7 @@ describe('Service: Get Player By Email', () => {
     service = moduleRef.get<PlayersService>(PlayersService);
   });
 
-  it('deve retornar undefined quando não encontrado jogador', async () => {
-    expect(await service.GetPlayerByEmail('any_email')).toBeUndefined();
+  it('deve lançar erro quando não encontrado jogador', async () => {
+    await expect(service.GetPlayerByEmail('any_email')).rejects.toThrow();
   });
 });
