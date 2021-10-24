@@ -1,4 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { throws } from 'assert';
+import { NotFoundError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CreatePlayerDto } from './dtos/create-players.dto';
@@ -19,6 +21,11 @@ export class PlayersService {
 
   async GetPlayerByEmail(email: string): Promise<Player> {
     const currentPlayer = this.players.find((player) => player.email === email);
+
+    if (!currentPlayer) {
+      throw new Error('No player found');
+    }
+
     return currentPlayer;
   }
 
