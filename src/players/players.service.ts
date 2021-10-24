@@ -9,15 +9,15 @@ export class PlayersService {
   private readonly logger = new Logger(PlayersService.name);
   private players: Player[] = [];
 
-  async upsertPlayer({
+  async UpsertPlayer({
     name,
     email,
     phoneNumber,
   }: CreatePlayerDto): Promise<void> {
-    this.upsertPlayer({ name, email, phoneNumber });
+    this.Create({ name, email, phoneNumber });
   }
 
-  create({ name, email, phoneNumber }: CreatePlayerDto): void {
+  Create({ name, email, phoneNumber }: CreatePlayerDto): void {
     this.players.push({
       name,
       email,
