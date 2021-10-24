@@ -12,7 +12,7 @@ export class PlayersController {
   }
 
   @Post()
-  async upsertPlayers(@Body() { name, email, phoneNumber }: CreatePlayerDto) {
-    this.playersService.upsertPlayer({ name, email, phoneNumber });
+  async UpsertPlayers(@Body() { name, email, phoneNumber }: CreatePlayerDto) {
+    await this.playersService.UpsertPlayer({ name, email, phoneNumber });
   }
 }
