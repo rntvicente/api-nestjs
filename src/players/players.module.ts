@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { PlayersController } from './players.controller';
 import { PlayersService } from './players.service';
-import { PlayersSchema } from './interfaces/players.schema'
+import { PlayersSchema } from './interfaces/players.schema';
 
 const features = [{ name: 'Players', schema: PlayersSchema }];
 @Module({
