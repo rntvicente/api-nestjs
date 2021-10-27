@@ -31,7 +31,7 @@ export class PlayersService {
     const currentPlayer = await this.playersModel.findOne({ email }).exec();
 
     if (!currentPlayer) {
-      throw new NotFoundException('Player not found')
+      throw new NotFoundException('Player not found');
     }
 
     return currentPlayer;
