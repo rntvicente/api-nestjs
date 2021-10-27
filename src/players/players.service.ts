@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -31,7 +31,7 @@ export class PlayersService {
     const currentPlayer = await this.playersModel.findOne({ email }).exec();
 
     if (!currentPlayer) {
-      throw new Error('No player found');
+      throw new NotFoundException('Player not found')
     }
 
     return currentPlayer;
