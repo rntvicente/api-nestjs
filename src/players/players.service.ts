@@ -1,26 +1,24 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 import { CreatePlayerDto } from './dtos/create-players.dto';
 import { Player } from './interfaces/players.interface';
 
 @Injectable()
 export class PlayersService {
-  @Inject('Players')
-  private readonly playersModel: Model<Player>;
   private players: Player[] = [];
 
-  constructor(playersModel: Model<Player>) {
-    this.playersModel = playersModel;
-  }
+  constructor(
+    @InjectModel('Players') private readonly playersModel: Model<Player>,
+  ) {}
 
   async UpsertPlayer({
     name,
     email,
     phoneNumber,
   }: CreatePlayerDto): Promise<Player> {
-    const existsPlayer = await this.GetPlayerByEmail(email);
+    const existsPlayer = await this.playersModel.findOne({ email }).exec();
 
     if (!existsPlayer) {
       return this.Create({ name, email, phoneNumber });
