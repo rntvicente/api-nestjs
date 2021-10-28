@@ -1,8 +1,20 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 
 import { CreatePlayerDto } from './dtos/create-players.dto';
+import { UpdatePlayerDto } from './dtos/update-players.dto';
 import { Player } from './interfaces/players.interface';
 import { PlayersService } from './players.service';
+import { PlayersParamsSchemaValidade } from './schema/players-params-schema-validate';
 
 @Controller('api/players')
 export class PlayersController {
@@ -13,24 +25,38 @@ export class PlayersController {
   }
 
   @Post()
-  async UpsertPlayers(
+  @UsePipes(ValidationPipe)
+  async createPlayers(
     @Body() { name, email, phoneNumber }: CreatePlayerDto,
+  ): Promise<Player> {
+    return await this.playersService.Create({ name, email, phoneNumber });
+  }
+
+  @Put('/:email')
+  @UsePipes(ValidationPipe)
+  async updatePlayers(
+    @Param('email', PlayersParamsSchemaValidade) email: string,
+    @Body() { name, phoneNumber }: UpdatePlayerDto,
   ): Promise<void> {
-    await this.playersService.UpsertPlayer({ name, email, phoneNumber });
+    await this.playersService.Update(email, { name, phoneNumber });
   }
 
   @Get()
-  async GetPlayerByEmail(
-    @Query('email') email: string,
-  ): Promise<Player[] | Player> {
-    if (email) {
-      return await this.playersService.GetPlayerByEmail(email);
-    }
+  async GetPlayers(): Promise<Player[]> {
     return await this.playersService.GetPlayers();
   }
 
-  @Delete()
-  async DeletePlayersByEmail(@Query('email') email: string): Promise<void> {
-    return await this.playersService.DeletePlayerByEmail(email);
+  @Get('/:email')
+  async GetPlayerByEmail(
+    @Param('email', PlayersParamsSchemaValidade) email: string,
+  ): Promise<Player> {
+    return await this.playersService.GetPlayerByEmail(email);
+  }
+
+  @Delete('/:email')
+  async DeletePlayersByEmail(
+    @Param('email', PlayersParamsSchemaValidade) email: string,
+  ): Promise<void> {
+    await this.playersService.DeletePlayerByEmail(email);
   }
 }
