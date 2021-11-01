@@ -34,7 +34,7 @@ export class PlayersService {
     const currentPlayer = await this.playersModel.findOne({ email }).exec();
 
     if (currentPlayer) {
-      throw new BadRequestException('Player found');
+      return currentPlayer;
     }
 
     const current = new this.playersModel({ name, email, phoneNumber });
