@@ -37,8 +37,8 @@ export class PlayersController {
   async updatePlayers(
     @Param('email', PlayersParamsSchemaValidade) email: string,
     @Body() { name, phoneNumber }: UpdatePlayerDto,
-  ): Promise<void> {
-    await this.playersService.Update(email, { name, phoneNumber });
+  ): Promise<Player> {
+    return await this.playersService.Update(email, { name, phoneNumber });
   }
 
   @Get()
