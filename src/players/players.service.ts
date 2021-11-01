@@ -12,8 +12,6 @@ import { Player } from './interfaces/players.interface';
 
 @Injectable()
 export class PlayersService {
-  private players: Player[] = [];
-
   constructor(
     @InjectModel('Players') private readonly playersModel: Model<Player>,
   ) {}
