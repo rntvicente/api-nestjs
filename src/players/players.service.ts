@@ -30,6 +30,10 @@ export class PlayersService {
     return this.playersModel.find().exec();
   }
 
+  async GetPlayersByIds(ids: string[]): Promise<Player[]> {
+    return this.playersModel.find().in(ids).exec();
+  }
+
   async Create({ name, email, phoneNumber }: CreatePlayerDto): Promise<Player> {
     const currentPlayer = await this.playersModel.findOne({ email }).exec();
 
