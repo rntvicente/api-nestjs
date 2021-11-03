@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import { CreateCategoriesDto } from './dtos/create-categories.dto';
 import { UpdateCategoriesDto } from './dtos/update-categories.dto';
 import { Category } from './interfaces/categories.interface';
-
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -16,6 +15,7 @@ export class CategoriesService {
   async GetCategoryByCategory(category: string): Promise<Category> {
     const currentCategory = await this.categoriesModel
       .findOne({ category })
+      .populate('players')
       .exec();
 
     if (!currentCategory) {
@@ -25,13 +25,17 @@ export class CategoriesService {
     return currentCategory;
   }
 
-  async CreateCategories({
+  async GetCategories(): Promise<Category[]> {
+    return await this.categoriesModel.find().populate('players').exec();
+  }
+
+  async Create({
     category,
     description,
     events,
   }: CreateCategoriesDto): Promise<Category> {
     const currentCategory = await this.categoriesModel
-      .findOne({ category })
+      .findOne({ category: category.toUpperCase() })
       .exec();
 
     if (currentCategory) {
@@ -42,7 +46,7 @@ export class CategoriesService {
     return current.save();
   }
 
-  async UpdateCategoryByCategory(
+  async Update(
     category: string,
     updateCategoriesDto: UpdateCategoriesDto,
   ): Promise<Category> {
@@ -53,6 +57,15 @@ export class CategoriesService {
         { _id: currentCategory._id },
         { $set: updateCategoriesDto },
       )
+      .exec();
+  }
+
+  async AddPlayers(category: string, playerId: any): Promise<void> {
+    const currentCategory = await this.GetCategoryByCategory(category);
+    currentCategory.players.push(playerId);
+
+    await this.categoriesModel
+      .findOneAndUpdate({ _id: currentCategory._id }, { $set: currentCategory })
       .exec();
   }
 }
