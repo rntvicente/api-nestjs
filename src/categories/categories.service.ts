@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateCategoriesDto } from './dtos/create-categories.dto';
 import { UpdateCategoriesDto } from './dtos/update-categories.dto';
 import { Category } from './interfaces/categories.interface';
+
 @Injectable()
 export class CategoriesService {
   constructor(
@@ -46,7 +47,7 @@ export class CategoriesService {
     return current.save();
   }
 
-  async Update(
+  async UpdateByCategory(
     category: string,
     updateCategoriesDto: UpdateCategoriesDto,
   ): Promise<Category> {
@@ -62,7 +63,7 @@ export class CategoriesService {
 
   async AddPlayers(category: string, playerId: any): Promise<void> {
     const currentCategory = await this.GetCategoryByCategory(category);
-    currentCategory.players.push(playerId);
+    currentCategory.players = [...currentCategory.players, playerId];
 
     await this.categoriesModel
       .findOneAndUpdate({ _id: currentCategory._id }, { $set: currentCategory })

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { CategoriesService } from './categories.service';
-import { PlayersService } from 'src/players/players.service';
+import { PlayersService } from '../players/players.service';
 import { CreateCategoriesDto } from './dtos/create-categories.dto';
 import { UpdateCategoriesDto } from './dtos/update-categories.dto';
 import { Category } from './interfaces/categories.interface';
@@ -45,10 +45,13 @@ export class CategoriesController {
     @Param('category') category: string,
     @Body() { description, events }: UpdateCategoriesDto,
   ): Promise<Category> {
-    return await this.categoriesService.Update(category.toUpperCase(), {
-      description,
-      events,
-    });
+    return await this.categoriesService.UpdateByCategory(
+      category.toUpperCase(),
+      {
+        description,
+        events,
+      },
+    );
   }
 
   @Get()

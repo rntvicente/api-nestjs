@@ -32,7 +32,7 @@ export class PlayersService {
   }
 
   async Create({ name, email, phoneNumber }: CreatePlayerDto): Promise<Player> {
-    const currentPlayer = await this.GetPlayerByEmail(email);
+    const currentPlayer = await this.playersModel.findOne({ email }).exec();
 
     if (currentPlayer) {
       return currentPlayer;
@@ -46,10 +46,12 @@ export class PlayersService {
     email: string,
     updatePlayerDto: UpdatePlayerDto,
   ): Promise<Player> {
-    const currentPlayer = await this.GetPlayerByEmail(email);
+    const { _id } = await this.GetPlayerByEmail(email);
 
-    return this.playersModel
-      .findByIdAndUpdate({ _id: currentPlayer._id }, { $set: updatePlayerDto })
+    console.log(JSON.stringify(_id));
+
+    return await this.playersModel
+      .findByIdAndUpdate({ _id }, { $set: updatePlayerDto })
       .exec();
   }
 

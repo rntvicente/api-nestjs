@@ -5,7 +5,7 @@ import { CategoriesController } from './categories.controller';
 import { CategoriesService } from './categories.service';
 import { PlayersService } from '../players/players.service';
 import { CategorySchema } from './interfaces/categories.schema';
-import { PlayersSchema } from 'src/players/interfaces/players.schema';
+import { PlayersSchema } from '../players/interfaces/players.schema';
 
 const features = [
   { name: 'Categories', schema: CategorySchema },
