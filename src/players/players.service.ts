@@ -9,7 +9,8 @@ import { Player } from './interfaces/players.interface';
 @Injectable()
 export class PlayersService {
   constructor(
-    @InjectModel('Players') private readonly playersModel: Model<Player>,
+    @InjectModel('Players')
+    private readonly playersModel: Model<Player>,
   ) {}
 
   async GetPlayerByEmail(email: string): Promise<Player> {
@@ -23,7 +24,7 @@ export class PlayersService {
   }
 
   async GetPlayers(): Promise<Player[]> {
-    return this.playersModel.find().exec();
+    return await this.playersModel.find().exec();
   }
 
   async GetPlayersByIds(ids: string[]): Promise<Player[]> {
@@ -31,7 +32,7 @@ export class PlayersService {
   }
 
   async Create({ name, email, phoneNumber }: CreatePlayerDto): Promise<Player> {
-    const currentPlayer = await this.playersModel.findOne({ email }).exec();
+    const currentPlayer = await this.GetPlayerByEmail(email);
 
     if (currentPlayer) {
       return currentPlayer;
@@ -41,7 +42,7 @@ export class PlayersService {
     return current.save();
   }
 
-  async Update(
+  async UpdatePlayerByEmail(
     email: string,
     updatePlayerDto: UpdatePlayerDto,
   ): Promise<Player> {

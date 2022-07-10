@@ -6,6 +6,7 @@ import { PlayersService } from './players.service';
 import { PlayersSchema } from './interfaces/players.schema';
 
 const features = [{ name: 'Players', schema: PlayersSchema }];
+
 @Module({
   imports: [MongooseModule.forFeature(features)],
   controllers: [PlayersController],

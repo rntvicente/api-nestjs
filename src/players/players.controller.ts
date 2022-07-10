@@ -34,11 +34,14 @@ export class PlayersController {
 
   @Put('/:email')
   @UsePipes(ValidationPipe)
-  async updatePlayers(
+  async UpdatePlayerByEmail(
     @Param('email', PlayersParamsSchemaValidade) email: string,
     @Body() { name, phoneNumber }: UpdatePlayerDto,
   ): Promise<Player> {
-    return await this.playersService.Update(email, { name, phoneNumber });
+    return await this.playersService.UpdatePlayerByEmail(email, {
+      name,
+      phoneNumber,
+    });
   }
 
   @Get()
