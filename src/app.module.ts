@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 
 import { PlayersModule } from './players/players.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ChallengeModule } from './challenge/challenge.module';
 
 config();
 
@@ -18,6 +19,7 @@ const opts = {
     PlayersModule,
     CategoriesModule,
     MongooseModule.forRoot(uriMongo, opts),
+    ChallengeModule,
   ],
   controllers: [],
   providers: [],
