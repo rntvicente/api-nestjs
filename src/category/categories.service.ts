@@ -30,6 +30,19 @@ export class CategoriesService {
     return await this.categoriesModel.find().populate('players').exec();
   }
 
+  async getCategoryByPlayerId(id: any): Promise<Category> {
+    const category = await this.categoriesModel
+      .findOne()
+      .where('players')
+      .in(id);
+
+    if (!category) {
+      throw new NotFoundException('Category or player not found');
+    }
+
+    return category;
+  }
+
   async Create({
     category,
     description,

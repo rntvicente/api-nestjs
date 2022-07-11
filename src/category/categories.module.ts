@@ -16,5 +16,6 @@ const features = [
   imports: [MongooseModule.forFeature(features)],
   controllers: [CategoriesController],
   providers: [CategoriesService, PlayersService],
+  exports: [CategoriesService],
 })
 export class CategoriesModule {}

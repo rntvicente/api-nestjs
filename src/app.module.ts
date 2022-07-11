@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { config } from 'dotenv';
 
 import { PlayersModule } from './players/players.module';
-import { CategoriesModule } from './categories/categories.module';
-import { ChallengeModule } from './challenge/challenge.module';
+import { CategoriesModule } from './category/categories.module';
+import { ChallengesModule } from './challenge/challenges.module';
 
 config();
 
@@ -16,10 +16,10 @@ const opts = {
 
 @Module({
   imports: [
+    MongooseModule.forRoot(uriMongo, opts),
     PlayersModule,
     CategoriesModule,
-    MongooseModule.forRoot(uriMongo, opts),
-    ChallengeModule,
+    ChallengesModule,
   ],
   controllers: [],
   providers: [],

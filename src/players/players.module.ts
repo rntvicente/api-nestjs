@@ -11,5 +11,6 @@ const features = [{ name: 'Players', schema: PlayersSchema }];
   imports: [MongooseModule.forFeature(features)],
   controllers: [PlayersController],
   providers: [PlayersService],
+  exports: [PlayersService],
 })
 export class PlayersModule {}

@@ -11,10 +11,10 @@ import { Player } from 'players/interfaces/players.interface';
 export class CreateChallengeDto {
   @IsNotEmpty()
   @IsDateString()
-  date: Date;
+  challengeDate: Date;
 
   @IsNotEmpty()
-  requester: string;
+  challenger: string;
 
   @IsArray()
   @ArrayMinSize(2)
