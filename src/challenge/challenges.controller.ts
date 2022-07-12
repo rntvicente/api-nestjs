@@ -13,7 +13,6 @@ import {
 
 import { ChallengeService } from './challenges.service';
 import { CreateChallengeDto } from './dtos/create-challenges.dto';
-import { UpdateChallengeDto } from './dtos/update-challenges.dto';
 
 @Controller('api/challenge')
 export class ChallengeController {

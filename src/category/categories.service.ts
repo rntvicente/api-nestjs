@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
+import { PlayersService } from 'players/players.service';
 import { CreateCategoriesDto } from './dtos/create-categories.dto';
 import { UpdateCategoriesDto } from './dtos/update-categories.dto';
 import { Category } from './interfaces/categories.interface';
@@ -11,9 +12,10 @@ export class CategoriesService {
   constructor(
     @InjectModel('Categories')
     private readonly categoriesModel: Model<Category>,
+    private readonly playersService: PlayersService,
   ) {}
 
-  async GetCategoryByCategory(category: string): Promise<Category> {
+  async GetCategory(category: string): Promise<Category> {
     const currentCategory = await this.categoriesModel
       .findOne({ category })
       .populate('players')
@@ -60,11 +62,11 @@ export class CategoriesService {
     return current.save();
   }
 
-  async UpdateByCategory(
+  async Update(
     category: string,
     updateCategoriesDto: UpdateCategoriesDto,
   ): Promise<Category> {
-    const currentCategory = await this.GetCategoryByCategory(category);
+    const currentCategory = await this.GetCategory(category);
 
     return this.categoriesModel
       .findByIdAndUpdate(
@@ -74,8 +76,14 @@ export class CategoriesService {
       .exec();
   }
 
-  async AddPlayers(category: string, playerId: any): Promise<void> {
-    const currentCategory = await this.GetCategoryByCategory(category);
+  async AddPlayers(category: string, email: string): Promise<void> {
+    const { _id: playerId } = await this.playersService.GetPlayerByEmail(email);
+
+    if (!playerId) {
+      throw new NotFoundException('Player not found');
+    }
+
+    const currentCategory = await this.GetCategory(category);
     currentCategory.players = [...currentCategory.players, playerId];
 
     await this.categoriesModel

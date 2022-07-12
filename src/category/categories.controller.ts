@@ -45,13 +45,10 @@ export class CategoriesController {
     @Param('category') category: string,
     @Body() { description, events }: UpdateCategoriesDto,
   ): Promise<Category> {
-    return await this.categoriesService.UpdateByCategory(
-      category.toUpperCase(),
-      {
-        description,
-        events,
-      },
-    );
+    return await this.categoriesService.Update(category.toUpperCase(), {
+      description,
+      events,
+    });
   }
 
   @Get()
@@ -60,10 +57,8 @@ export class CategoriesController {
   }
 
   @Get('/:category')
-  async getCatogoryByCategory(
-    @Param('category') category: string,
-  ): Promise<Category> {
-    return this.categoriesService.GetCategoryByCategory(category.toUpperCase());
+  async getCatogory(@Param('category') category: string): Promise<Category> {
+    return this.categoriesService.GetCategory(category.toUpperCase());
   }
 
   @Post('/:category/players/:email')
@@ -72,12 +67,6 @@ export class CategoriesController {
     @Param('category') category: string,
     @Param('email') email: string,
   ): Promise<void> {
-    const player = await this.playersService.GetPlayerByEmail(email);
-
-    if (!player) {
-      throw new NotFoundException('Player not found');
-    }
-
-    await this.categoriesService.AddPlayers(category.toUpperCase(), player._id);
+    await this.categoriesService.AddPlayers(category.toUpperCase(), email);
   }
 }
