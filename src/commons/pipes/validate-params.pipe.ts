@@ -4,10 +4,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 
-export class PlayersParamsSchemaValidade implements PipeTransform {
+export class ValidateParamsPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
     if (!value) {
-      throw new BadRequestException(`Missing param: ${metadata.data}.`);
+      throw new BadRequestException(
+        `Missing param: ${metadata.data} is require`,
+      );
     }
 
     return value;

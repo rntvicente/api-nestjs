@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -61,7 +60,7 @@ export class CategoriesController {
     return this.categoriesService.GetCategory(category.toUpperCase());
   }
 
-  @Post('/:category/players/:email')
+  @Post('/:category/players/:email/email')
   @UsePipes(ValidationPipe)
   async addPlayers(
     @Param('category') category: string,

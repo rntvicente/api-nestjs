@@ -3,19 +3,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { CategoriesController } from './categories.controller';
 import { CategoriesService } from './categories.service';
-import { PlayersService } from '../players/players.service';
 import { CategorySchema } from './interfaces/categories.schema';
-import { PlayersSchema } from '../players/interfaces/players.schema';
+import { PlayersModule } from 'players/players.module';
 
-const features = [
-  { name: 'Categories', schema: CategorySchema },
-  { name: 'Players', schema: PlayersSchema },
-];
-
+const features = [{ name: 'Categories', schema: CategorySchema }];
 @Module({
-  imports: [MongooseModule.forFeature(features)],
+  imports: [MongooseModule.forFeature(features), PlayersModule],
   controllers: [CategoriesController],
-  providers: [CategoriesService, PlayersService],
+  providers: [CategoriesService],
   exports: [CategoriesService],
 })
 export class CategoriesModule {}

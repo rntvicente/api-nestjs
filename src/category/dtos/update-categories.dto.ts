@@ -18,5 +18,6 @@ export class UpdateCategoriesDto {
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
+  @IsOptional()
   events: Event[];
 }

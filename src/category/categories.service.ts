@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -72,7 +76,9 @@ export class CategoriesService {
       .findByIdAndUpdate(
         { _id: currentCategory._id },
         { $set: updateCategoriesDto },
+        { new: true },
       )
+      .populate('players')
       .exec();
   }
 
@@ -83,11 +89,26 @@ export class CategoriesService {
       throw new NotFoundException('Player not found');
     }
 
+    const hasPlayer = await this.categoriesModel
+      .findOne({ category })
+      .where('players')
+      .in(playerId)
+      .exec();
+
+    if (hasPlayer) {
+      throw new BadRequestException('Already contains player in category');
+    }
+
     const currentCategory = await this.GetCategory(category);
-    currentCategory.players = [...currentCategory.players, playerId];
+
+    const push = {
+      $push: {
+        players: playerId,
+      },
+    };
 
     await this.categoriesModel
-      .findOneAndUpdate({ _id: currentCategory._id }, { $set: currentCategory })
+      .findOneAndUpdate({ _id: currentCategory._id }, push)
       .exec();
   }
 }

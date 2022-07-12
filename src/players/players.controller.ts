@@ -9,13 +9,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ValidateParamsPipe } from 'commons/pipes/validate-params.pipe';
 
 import { CreatePlayerDto } from './dtos/create-players.dto';
 import { UpdatePlayerDto } from './dtos/update-players.dto';
 import { Player } from './interfaces/players.interface';
 import { PlayersService } from './players.service';
-import { PlayersParamsSchemaValidade } from './schema/players-params-schema-validate';
-
 @Controller('api/players')
 export class PlayersController {
   private readonly playersService: PlayersService;
@@ -35,7 +34,7 @@ export class PlayersController {
   @Put('/:email')
   @UsePipes(ValidationPipe)
   async UpdatePlayerByEmail(
-    @Param('email', PlayersParamsSchemaValidade) email: string,
+    @Param('email', ValidateParamsPipe) email: string,
     @Body() { name, phoneNumber }: UpdatePlayerDto,
   ): Promise<Player> {
     return await this.playersService.UpdatePlayerByEmail(email, {
@@ -51,14 +50,14 @@ export class PlayersController {
 
   @Get('/:email')
   async GetPlayerByEmail(
-    @Param('email', PlayersParamsSchemaValidade) email: string,
+    @Param('email', ValidateParamsPipe) email: string,
   ): Promise<Player> {
     return await this.playersService.GetPlayerByEmail(email);
   }
 
   @Delete('/:email')
   async DeletePlayersByEmail(
-    @Param('email', PlayersParamsSchemaValidade) email: string,
+    @Param('email', ValidateParamsPipe) email: string,
   ): Promise<void> {
     await this.playersService.DeletePlayerByEmail(email);
   }
