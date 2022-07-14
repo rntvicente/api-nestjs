@@ -1,34 +1,39 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UsePipes,
   ValidationPipe,
   Logger,
-} from '@nestjs/common';
+  Get,
+} from '@nestjs/common'
 
-import { ChallengeService } from './challenges.service';
-import { CreateChallengeDto } from './dtos/create-challenges.dto';
+import { ChallengeService } from './challenges.service'
+import { CreateChallengeDto } from './dtos/create-challenges.dto'
+import { Challenge } from './interfaces/challenges.interface'
 
-@Controller('api/challenge')
-export class ChallengeController {
+@Controller('api/challenges')
+export class ChallengesController {
   constructor(private readonly challengeService: ChallengeService) {}
 
-  private readonly logger = new Logger(ChallengeController.name);
+  private readonly logger = new Logger(ChallengesController.name)
 
   @Post()
   @UsePipes(ValidationPipe)
-  async create(
+  async createChallenges(
     @Body() { challengeDate, challenger, players }: CreateChallengeDto,
-  ) {
+  ): Promise<Challenge> {
     return await this.challengeService.create({
       challengeDate,
       challenger,
       players,
-    });
+    })
+  }
+
+  @Get()
+  async getChallenges(): Promise<Challenge[]> {
+    const challenges = await this.challengeService.getChallenges()
+
+    return challenges
   }
 }

@@ -3,21 +3,20 @@ import {
   ArrayMinSize,
   IsArray,
   IsDateString,
+  IsMongoId,
   IsNotEmpty,
-} from 'class-validator';
-
-import { Player } from 'players/interfaces/players.interface';
-
+} from 'class-validator'
 export class CreateChallengeDto {
   @IsNotEmpty()
   @IsDateString()
-  challengeDate: Date;
+  challengeDate: Date
 
   @IsNotEmpty()
-  challenger: string;
+  @IsMongoId()
+  challenger: string
 
   @IsArray()
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
-  players: Array<Player>;
+  players: Array<string>
 }

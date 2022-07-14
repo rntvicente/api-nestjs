@@ -8,19 +8,19 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
-import { ValidateParamsPipe } from 'commons/pipes/validate-params.pipe';
+} from '@nestjs/common'
+import { ValidateParamsPipe } from 'commons/pipes/validate-params.pipe'
 
-import { CreatePlayerDto } from './dtos/create-players.dto';
-import { UpdatePlayerDto } from './dtos/update-players.dto';
-import { Player } from './interfaces/players.interface';
-import { PlayersService } from './players.service';
+import { CreatePlayerDto } from './dtos/create-players.dto'
+import { UpdatePlayerDto } from './dtos/update-players.dto'
+import { Player } from './interfaces/players.interface'
+import { PlayersService } from './players.service'
 @Controller('api/players')
 export class PlayersController {
-  private readonly playersService: PlayersService;
+  private readonly playersService: PlayersService
 
   constructor(playersService: PlayersService) {
-    this.playersService = playersService;
+    this.playersService = playersService
   }
 
   @Post()
@@ -28,7 +28,7 @@ export class PlayersController {
   async createPlayers(
     @Body() { name, email, phoneNumber }: CreatePlayerDto,
   ): Promise<Player> {
-    return await this.playersService.Create({ name, email, phoneNumber });
+    return await this.playersService.Create({ name, email, phoneNumber })
   }
 
   @Put('/:email')
@@ -40,25 +40,25 @@ export class PlayersController {
     return await this.playersService.UpdatePlayerByEmail(email, {
       name,
       phoneNumber,
-    });
+    })
   }
 
   @Get()
   async GetPlayers(): Promise<Player[]> {
-    return await this.playersService.GetPlayers();
+    return await this.playersService.GetPlayers()
   }
 
   @Get('/:email')
   async GetPlayerByEmail(
     @Param('email', ValidateParamsPipe) email: string,
   ): Promise<Player> {
-    return await this.playersService.GetPlayerByEmail(email);
+    return await this.playersService.GetPlayerByEmail(email)
   }
 
   @Delete('/:email')
   async DeletePlayersByEmail(
     @Param('email', ValidateParamsPipe) email: string,
   ): Promise<void> {
-    await this.playersService.DeletePlayerByEmail(email);
+    await this.playersService.DeletePlayerByEmail(email)
   }
 }

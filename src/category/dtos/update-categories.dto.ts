@@ -5,19 +5,19 @@ import {
   IsString,
   Length,
   ValidateNested,
-} from 'class-validator';
+} from 'class-validator'
 
-import { Event } from '../interfaces/categories.interface';
+import { Event } from '../interfaces/categories.interface'
 
 export class UpdateCategoriesDto {
   @IsString()
   @IsOptional()
   @Length(10, 20)
-  description: string;
+  description: string
 
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
   @IsOptional()
-  events: Event[];
+  events: Event[]
 }

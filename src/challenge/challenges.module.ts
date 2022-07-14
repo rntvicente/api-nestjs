@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import { ChallengeService } from './challenges.service';
-import { ChallengeController } from './challenges.controller';
-import { ChallengeSchema } from './interfaces/challenge.schema';
-import { PlayersModule } from 'players/players.module';
-import { CategoriesModule } from 'category/categories.module';
+import { ChallengeService } from './challenges.service'
+import { ChallengesController } from './challenges.controller'
+import { ChallengesSchema } from './interfaces/challenges.schema'
+import { PlayersModule } from 'players/players.module'
+import { CategoriesModule } from 'category/categories.module'
 
-const features = [{ name: 'Challenges', schema: ChallengeSchema }];
+const features = [{ name: 'Challenges', schema: ChallengesSchema }]
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ const features = [{ name: 'Challenges', schema: ChallengeSchema }];
     PlayersModule,
     CategoriesModule,
   ],
-  controllers: [ChallengeController],
+  controllers: [ChallengesController],
   providers: [ChallengeService],
 })
 export class ChallengesModule {}

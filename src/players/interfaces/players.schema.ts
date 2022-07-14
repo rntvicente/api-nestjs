@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose'
 
 export const PlayersSchema = new mongoose.Schema(
   {
@@ -10,4 +10,4 @@ export const PlayersSchema = new mongoose.Schema(
     photo: String,
   },
   { timestamps: true, collection: 'players' },
-);
+)

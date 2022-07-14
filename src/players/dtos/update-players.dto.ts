@@ -1,5 +1,5 @@
 export class UpdatePlayerDto {
-  readonly phoneNumber: string;
+  readonly phoneNumber: string
 
-  readonly name: string;
+  readonly name: string
 }

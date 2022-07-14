@@ -7,25 +7,25 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
+} from '@nestjs/common'
 
-import { CategoriesService } from './categories.service';
-import { PlayersService } from '../players/players.service';
-import { CreateCategoriesDto } from './dtos/create-categories.dto';
-import { UpdateCategoriesDto } from './dtos/update-categories.dto';
-import { Category } from './interfaces/categories.interface';
+import { CategoriesService } from './categories.service'
+import { PlayersService } from '../players/players.service'
+import { CreateCategoriesDto } from './dtos/create-categories.dto'
+import { UpdateCategoriesDto } from './dtos/update-categories.dto'
+import { Category } from './interfaces/categories.interface'
 
 @Controller('api/categories')
 export class CategoriesController {
-  private readonly categoriesService: CategoriesService;
-  private readonly playersService: PlayersService;
+  private readonly categoriesService: CategoriesService
+  private readonly playersService: PlayersService
 
   constructor(
     categoriesService: CategoriesService,
     playersService: PlayersService,
   ) {
-    this.categoriesService = categoriesService;
-    this.playersService = playersService;
+    this.categoriesService = categoriesService
+    this.playersService = playersService
   }
 
   @Post()
@@ -35,7 +35,7 @@ export class CategoriesController {
       category: category.toUpperCase(),
       description,
       events,
-    });
+    })
   }
 
   @Put('/:category')
@@ -47,17 +47,17 @@ export class CategoriesController {
     return await this.categoriesService.Update(category.toUpperCase(), {
       description,
       events,
-    });
+    })
   }
 
   @Get()
   async getCatogories(): Promise<Category[]> {
-    return this.categoriesService.GetCategories();
+    return this.categoriesService.GetCategories()
   }
 
   @Get('/:category')
   async getCatogory(@Param('category') category: string): Promise<Category> {
-    return this.categoriesService.GetCategory(category.toUpperCase());
+    return this.categoriesService.GetCategory(category.toUpperCase())
   }
 
   @Post('/:category/players/:email/email')
@@ -66,6 +66,6 @@ export class CategoriesController {
     @Param('category') category: string,
     @Param('email') email: string,
   ): Promise<void> {
-    await this.categoriesService.AddPlayers(category.toUpperCase(), email);
+    await this.categoriesService.AddPlayers(category.toUpperCase(), email)
   }
 }

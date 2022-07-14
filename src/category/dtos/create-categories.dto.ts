@@ -5,23 +5,23 @@ import {
   IsString,
   Length,
   ValidateNested,
-} from 'class-validator';
+} from 'class-validator'
 
-import { Event } from '../interfaces/categories.interface';
+import { Event } from '../interfaces/categories.interface'
 
 export class CreateCategoriesDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 1)
-  readonly category: string;
+  readonly category: string
 
   @IsString()
   @IsNotEmpty()
   @Length(10, 20)
-  description: string;
+  description: string
 
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
-  events: Event[];
+  events: Event[]
 }

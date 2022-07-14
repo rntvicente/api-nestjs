@@ -2,14 +2,14 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+} from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 
-import { PlayersService } from 'players/players.service';
-import { CreateCategoriesDto } from './dtos/create-categories.dto';
-import { UpdateCategoriesDto } from './dtos/update-categories.dto';
-import { Category } from './interfaces/categories.interface';
+import { PlayersService } from 'players/players.service'
+import { CreateCategoriesDto } from './dtos/create-categories.dto'
+import { UpdateCategoriesDto } from './dtos/update-categories.dto'
+import { Category } from './interfaces/categories.interface'
 
 @Injectable()
 export class CategoriesService {
@@ -23,30 +23,30 @@ export class CategoriesService {
     const currentCategory = await this.categoriesModel
       .findOne({ category })
       .populate('players')
-      .exec();
+      .exec()
 
     if (!currentCategory) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException('Category not found')
     }
 
-    return currentCategory;
+    return currentCategory
   }
 
   async GetCategories(): Promise<Category[]> {
-    return await this.categoriesModel.find().populate('players').exec();
+    return await this.categoriesModel.find().populate('players').exec()
   }
 
   async getCategoryByPlayerId(id: any): Promise<Category> {
     const category = await this.categoriesModel
       .findOne()
       .where('players')
-      .in(id);
+      .in(id)
 
     if (!category) {
-      throw new NotFoundException('Category or player not found');
+      throw new NotFoundException('Category not found')
     }
 
-    return category;
+    return category
   }
 
   async Create({
@@ -56,21 +56,21 @@ export class CategoriesService {
   }: CreateCategoriesDto): Promise<Category> {
     const currentCategory = await this.categoriesModel
       .findOne({ category: category.toUpperCase() })
-      .exec();
+      .exec()
 
     if (currentCategory) {
-      return currentCategory;
+      return currentCategory
     }
 
-    const current = new this.categoriesModel({ category, description, events });
-    return current.save();
+    const current = new this.categoriesModel({ category, description, events })
+    return current.save()
   }
 
   async Update(
     category: string,
     updateCategoriesDto: UpdateCategoriesDto,
   ): Promise<Category> {
-    const currentCategory = await this.GetCategory(category);
+    const currentCategory = await this.GetCategory(category)
 
     return this.categoriesModel
       .findByIdAndUpdate(
@@ -79,36 +79,36 @@ export class CategoriesService {
         { new: true },
       )
       .populate('players')
-      .exec();
+      .exec()
   }
 
   async AddPlayers(category: string, email: string): Promise<void> {
-    const { _id: playerId } = await this.playersService.GetPlayerByEmail(email);
+    const { _id: playerId } = await this.playersService.GetPlayerByEmail(email)
 
     if (!playerId) {
-      throw new NotFoundException('Player not found');
+      throw new NotFoundException('Player not found')
     }
 
     const hasPlayer = await this.categoriesModel
       .findOne({ category })
       .where('players')
       .in(playerId)
-      .exec();
+      .exec()
 
     if (hasPlayer) {
-      throw new BadRequestException('Already contains player in category');
+      throw new BadRequestException('Already contains player in category')
     }
 
-    const currentCategory = await this.GetCategory(category);
+    const currentCategory = await this.GetCategory(category)
 
     const push = {
       $push: {
         players: playerId,
       },
-    };
+    }
 
     await this.categoriesModel
       .findOneAndUpdate({ _id: currentCategory._id }, push)
-      .exec();
+      .exec()
   }
 }
