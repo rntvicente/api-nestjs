@@ -1,4 +1,4 @@
-export enum ChallengeStatus {
+export enum ChallengeStatusEnum {
   DONE = 'DONE',
   PENDING = 'PENDING',
   ACCEPT = 'ACCEPT',

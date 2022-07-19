@@ -3,11 +3,11 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
 import { CategoriesService } from 'category/categories.service'
-import { Player } from 'players/interfaces/players.interface'
 import { PlayersService } from 'players/players.service'
 import { CreateChallengeDto } from './dtos/create-challenges.dto'
-import { ChallengeStatus } from './interfaces/challenges-status.enum'
+import { ChallengeStatusEnum } from './interfaces/challenges-status.enum'
 import { Challenge } from './interfaces/challenges.interface'
+import { UpdateChallengeDto } from './dtos/update-challenges.dto'
 
 @Injectable()
 export class ChallengeService {
@@ -57,7 +57,7 @@ export class ChallengeService {
       challengeDate,
       category: category,
       requestDate: new Date(),
-      status: ChallengeStatus.PENDING,
+      status: ChallengeStatusEnum.PENDING,
     })
 
     return await challenge.save()
@@ -70,5 +70,28 @@ export class ChallengeService {
       .exec()
 
     return challenges
+  }
+
+  async updateChallengeById(
+    id: string,
+    { challengeDate, status }: UpdateChallengeDto,
+  ): Promise<Challenge> {
+    const current = await this.challengeModel.findById(id).exec()
+
+    if (!current) {
+      throw new NotFoundException('Challenge not found')
+    }
+
+    const responseDate = status ? new Date() : current.responseDate
+
+    const filter = { _id: id }
+
+    const set = {
+      $set: { challengeDate, status: status.toUpperCase(), responseDate },
+    }
+
+    return await this.challengeModel.findByIdAndUpdate(filter, set, {
+      new: true,
+    })
   }
 }
